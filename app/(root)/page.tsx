@@ -1,13 +1,24 @@
-import Hello from "@/components/Hello";
+interface Album {
+    id: number;
+    title: string;
+    artists: { name: string }[];
 
-const Home = () => {
-    console.log('Home');
+}
+
+async function Home() {
+    const response = await fetch("https://api.discogs.com/releases/249504");
+    if (!response.ok) throw new Error("Something went wrong!");
+
+    const album: Album = await response.json();
+
     return (
-        <main>
-        <div className="text-2xl font-bold">Welcome to Next.js</div>
-            <Hello />
+        <div className="grid grid-cols-1">
 
-        </main>
-    );
+            <div className="grid-cols-1 col-span-2">
+                <h1>Title: {album.title}</h1>
+                <p>Name: {album.artists[0]?.name}</p>
+                </div>
+        </div>
+    )
 }
 export default Home
